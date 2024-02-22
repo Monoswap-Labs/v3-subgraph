@@ -1,0 +1,21 @@
+{
+  "name": "monoswap-v3-subgraph",
+  "version": "1.0.0",
+  "repository": "https://github.com/Monoswap-labs/v3-subgraph",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "codegen": "graph codegen --output-dir src/types/",
+    "build": "yarn codegen && graph build",
+    "deploy": "graph deploy --studio monoswap-v3"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "0.67.2",
+    "@graphprotocol/graph-ts": "^0.31.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-prettier": "^6.1.0",
+    "prettier": "^1.18.2",
+    "typescript": "^3.5.2"
+  }
+}
