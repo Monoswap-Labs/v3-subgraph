@@ -1,7 +1,5 @@
-# BaseX Subgraph
+# Monoswap Subgraph
 
 ### Subgraph Endpoint
 
-Synced at: https://thegraph.com/hosted-service/subgraph/harleen-m/basex
-
-Pending Changes at same URL
+Synced at: https://thegraph.com/studio/subgraph/monoswap-v3/
