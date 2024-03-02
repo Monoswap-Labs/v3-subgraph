@@ -1,24 +1,20 @@
 /* eslint-disable prefer-const */
 import { ONE_BD, ZERO_BD, ZERO_BI } from './constants'
 import { Bundle, Pool, Token } from './../types/schema'
-import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt, log} from '@graphprotocol/graph-ts'
 import { exponentToBigDecimal, safeDiv } from '../utils/index'
 
-const WETH_ADDRESS = '0x4200000000000000000000000000000000000023'
-const WETH_USDC_03_POOL = '0xCBa3880cc1A76bBFd2a5993C3b0e813eb3056276'
+const WETH_ADDRESS = '0x4300000000000000000000000000000000000004'
+const WETH_USDB_03_POOL = '0x0D44F3F22F917cc57368A6D30Ba18D5801789cD9'
 
-const USDC_ADDRESS = '0xda9C093a7D9e41d21Dc9A7ff5601A3FD02111d95'
-const USDB_ADDRESS = '0x4200000000000000000000000000000000000022'
-const MUSD_ADDRESS = '0x54D12b155dA569aaEa910A778Eb3EC9cd2B26230'
+const USDB_ADDRESS = '0x4300000000000000000000000000000000000003'
+const MUSD_ADDRESS = '0x837fE561e9C5DFa73F607fDa679295DBC2Be5E40'
 
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with
 export let WHITELIST_TOKENS: string[] = [
   WETH_ADDRESS, // WETH
-  '0xcF749620571A3920a27CD8Eef17Daa1db7C93c4C', // BTC
-  '0xa07aC8cDe2a98B189477b8e41F0c2Ea6CdDbC055', // MONO
-  USDC_ADDRESS,
   USDB_ADDRESS,
   MUSD_ADDRESS
 ]
@@ -30,24 +26,25 @@ let STABLE_COINS: string[] = [
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString('2')
 
-let Q192 = '6277101735386680763835789423207666416102355444464034512896'
+let Q192 = 2 ** 192
 export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigInt, token0: Token, token1: Token): BigDecimal[] {
   let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal()
-  let denom = BigDecimal.fromString(Q192)
+  let denom = BigDecimal.fromString(`${Q192}`)
   let price1 = num
     .div(denom)
     .times(exponentToBigDecimal(token0.decimals))
     .div(exponentToBigDecimal(token1.decimals))
 
   let price0 = safeDiv(BigDecimal.fromString('1'), price1)
+  log.debug(`price0: ${price0} - price1: ${price1}`,[])
   return [price0, price1]
 }
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth price for a stablecoin
-  let usdcPool = Pool.load(WETH_USDC_03_POOL) // USDbC is token1
-  if (usdcPool !== null) {
-    return usdcPool.token1Price
+  let usdbPool = Pool.load(WETH_USDB_03_POOL) // USDB is token0
+  if (usdbPool !== null) {
+    return usdbPool.token0Price
   } else {
     return ZERO_BD
   }

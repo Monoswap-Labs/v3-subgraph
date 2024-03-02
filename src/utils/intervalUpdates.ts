@@ -21,7 +21,7 @@ import { ethereum } from '@graphprotocol/graph-ts'
  * @param event
  */
 export function updateUniswapDayData(event: ethereum.Event): UniswapDayData {
-  let uniswap = Factory.load(FACTORY_ADDRESS)
+  let monoswap = Factory.load(FACTORY_ADDRESS)
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400 // rounded
   let dayStartTimestamp = dayID * 86400
@@ -34,8 +34,8 @@ export function updateUniswapDayData(event: ethereum.Event): UniswapDayData {
     uniswapDayData.volumeUSDUntracked = ZERO_BD
     uniswapDayData.feesUSD = ZERO_BD
   }
-  uniswapDayData.tvlUSD = uniswap!.totalValueLockedUSD
-  uniswapDayData.txCount = uniswap!.txCount
+  uniswapDayData.tvlUSD = monoswap!.totalValueLockedUSD
+  uniswapDayData.txCount = monoswap!.txCount
   uniswapDayData.save()
   return uniswapDayData as UniswapDayData
 }
