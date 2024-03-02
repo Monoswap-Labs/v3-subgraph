@@ -26,17 +26,16 @@ let STABLE_COINS: string[] = [
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString('2')
 
-let Q192 = 2 ** 192
+let Q192 = '6277101735386680763835789423207666416102355444464034512896'
 export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigInt, token0: Token, token1: Token): BigDecimal[] {
   let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal()
-  let denom = BigDecimal.fromString(`${Q192}`)
+  let denom = BigDecimal.fromString(Q192)
   let price1 = num
     .div(denom)
     .times(exponentToBigDecimal(token0.decimals))
     .div(exponentToBigDecimal(token1.decimals))
 
   let price0 = safeDiv(BigDecimal.fromString('1'), price1)
-  log.debug(`price0: ${price0} - price1: ${price1}`,[])
   return [price0, price1]
 }
 

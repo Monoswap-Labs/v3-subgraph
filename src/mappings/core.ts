@@ -286,9 +286,9 @@ export function handleSwap(event: SwapEvent): void {
   if (!bundle || !factory || !pool) return
 
   // // hot fix for bad pricing
-  // if (pool.id == '0x9663f2ca0454accad3e094448ea6f77443880454') {
-  //   return
-  // }
+  if (pool.id == '0x038DEbF3DF3eeCD442753451D100c90B184E23A0') {
+    return
+  }
 
   let token0 = Token.load(pool.token0)
   let token1 = Token.load(pool.token1)
